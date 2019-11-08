@@ -1,0 +1,82 @@
+swagger: '2.0'
+info:
+  description: Servicio para el envio de correos
+  version: 1.0.0
+  title: Servicio MailSend Kallsonys
+basePath: /OMS/MailSend/v1
+tags:
+  - name: MailSend
+    description: Envio de Correos
+schemes:
+  - http
+paths:
+  /mailsend/correo:
+    post:
+      tags:
+        - MailSend
+      summary: Enviar un Correo
+      operationId: enviarCorreo
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: headerRq
+          in: header
+          description: Cabecera estándar
+          required: true
+          type: string
+        - name: serviceID
+          in: header
+          description: servIdKallsony
+          required: true
+          type: string
+        - in: body
+          name: correo
+          description: Informacion del correo a enviar
+          required: true
+          schema:
+            $ref: '#/definitions/Correos'
+      responses:
+        '200':
+          description: EXITO
+          schema:
+            $ref: '#/definitions/PostRsType'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/PostRsType'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/PostRsType'
+definitions:
+  StatusType:
+    type: object
+    properties:
+      statusCode:
+        type: integer
+        description: Código de status.
+      statusDesc:
+        type: string
+        description: Descripción de estatus.
+    description: Status de respuesta.
+    xml:
+      name: StatusType
+  PostRsType:
+    type: object
+    properties:
+      status:
+        $ref: '#/definitions/StatusType'
+      confirmacion:
+        type: string
+        description: correoEnviado.
+  Correos:
+    type: object
+    properties:
+      destinatario:
+        type: string
+      cuerpo:
+        type: string
+      mensaje:
+        type: string
